@@ -7,23 +7,342 @@
         <script src="vendors/processing.min.js"></script>
     </head>
     <body>
-        <h1>Processing project by Antonio</h1>
+        <h1>Processing project by Mercedes San Martín García</h1>
         <script type="text/processing">
 
             // Write your project here
             
-            // Example
-            void setup() {
-              size(200, 200);
-              background(255);
-            }
-            void draw(){
-                pushMatrix();
-                translate(100, 100);
-                rotate(radians(frameCount * 2  % 360));
-                rect(0, 0, 80, 5);
-                popMatrix();
-            }
+           int botonX[]={56,112,168,225};
+int botonY=70;
+int fondoInterruptorY=148;
+
+//TAMANIO DE LOS BOTONES Y FONDOS DE INTERRUPTORES
+int botonLength=46;
+
+int fondoInterruptorLargo=46;
+int fondoInterruptorAncho=105;
+
+//POSICION DE LOS CUADRADOS DEL INTERRUPTOR DE TIPO1
+int interruptoresX[]={68,124,179,237};
+int interruptorY1=168;
+
+//TAMANIO DE LOS CUADRADOS DEL INTERRUPTOR
+int interruptorLength=23;
+
+//POSICION DE LOS CUADRADOS DEL INTERRUPTOR TIPO2
+int interruptorY2=191;
+
+//TAMANIO DEL MEDIDOR DEL SCROLL Y DECLARACION PARA VALOR ACTUAL Y POSICIONES
+int scrollX, scrollY;
+int scrollLength=28;
+float scrollValue;
+
+//COLORES
+color botonColor[]={color(255,0,0), color(0,255,0)};
+color fondoInterruptor=color(127);
+color interruptor[]={color(200), color(62)};
+color scroll=color(0);
+color colorActualBoton[]=new color[4];
+color colorActualInterruptor[]=new color[4];
+color colorActual[]=new color[4];
+
+
+/*Inicializacion de los valores de las variables*/
+void setup(){
+  //Se asigna el tamanio de la ventana
+  size(700, 280);
+  
+  //color actual de los botones
+  colorActualBoton[0]=botonColor[0];
+  colorActualBoton[1]=botonColor[0];
+  colorActualBoton[2]=botonColor[0];
+  colorActualBoton[3]=botonColor[0];
+
+  colorActualInterruptor[0]=interruptor[0];
+  colorActualInterruptor[1]=interruptor[0];
+  colorActualInterruptor[2]=interruptor[0];
+  colorActualInterruptor[3]=interruptor[0];
+  
+  colorActual[0]=interruptor[1];
+  colorActual[1]=interruptor[1];
+  colorActual[2]=interruptor[1];
+  colorActual[3]=interruptor[1];
+  
+  //tamanio del scroll o slider
+  scrollX=512;
+  scrollY=134;
+  scrollLength=20;
+
+
+}
+/*Creacion de la interfaz con botones interruptores y colores*/
+void draw(){
+
+  background(71,138,220);
+  
+  //Se llenan los botones con el color establecido
+  fill(colorActualBoton[0]);
+  
+  //Se dibujan los rectangulos que seran los botones en su respectiva posicion
+  rect(botonX[0], botonY, botonLength, botonLength);
+  fill(colorActualBoton[1]);
+  rect(botonX[1], botonY, botonLength, botonLength);
+  fill(colorActualBoton[2]);
+  rect(botonX[2], botonY, botonLength, botonLength);
+  fill(colorActualBoton[3]);
+  rect(botonX[3], botonY, botonLength, botonLength);
+  
+  //Se rellena el fondo del interruptor con el color establecido
+  fill(fondoInterruptor);
+  
+  //Se dibujan los fondos de los fondos de los interruptores
+  rect(botonX[0], fondoInterruptorY, fondoInterruptorAncho, fondoInterruptorLargo);
+  rect(botonX[1], fondoInterruptorY, fondoInterruptorAncho, fondoInterruptorLargo);
+  rect(botonX[2], fondoInterruptorY, fondoInterruptorAncho, fondoInterruptorLargo);
+  rect(botonX[3], fondoInterruptorY, fondoInterruptorAncho, fondoInterruptorLargo);
+  
+  //Se rellena del coloro establecidos los interruptores tipo1
+  fill(colorActualInterruptor[0]);
+  
+  //Se cambia el color de del borde
+  stroke(200);
+  
+  //se dibujan los cuadrados del interruptor tipo1
+  rect(interruptoresX[0], interruptorY1, interruptorLength, interruptorLength);
+  fill(colorActualInterruptor[1]);
+  rect(interruptoresX[1], interruptorY1, interruptorLength, interruptorLength);
+  fill(colorActualInterruptor[2]);
+  rect(interruptoresX[2], interruptorY1, interruptorLength, interruptorLength);
+  fill(colorActualInterruptor[3]);
+  rect(interruptoresX[3], interruptorY1, interruptorLength, interruptorLength);
+  
+  //se rellena del color establecido los interruptores tipo2
+  fill(colorActual[0]);
+  
+  //Se cambia el color del borde
+  stroke(62);
+  //se dibujan los cuadrados del interruptor tipo1
+  rect(interruptoresX[0], interruptorY2, interruptorLength, interruptorLength);
+  fill(colorActual[1]);
+  rect(interruptoresX[1], interruptorY2, interruptorLength, interruptorLength);
+  fill(colorActual[2]);
+  rect(interruptoresX[2], interruptorY2, interruptorLength, interruptorLength);
+  fill(colorActual[3]);
+  rect(interruptoresX[3], interruptorY2, interruptorLength, interruptorLength);
+  
+  stroke(0);
+  
+  //Se dibuja el medidor del scroll
+  fill(scroll);
+  rect(scrollX, scrollY, scrollLength, scrollLength);
+  
+  //se inserta el valor del scroll
+  textSize(30);
+  int scrollValueInterruptor= int(scrollValue);
+  text (scrollValueInterruptor, 475,255);
+  
+  // se inserta el valor del scroll
+  textSize(15);
+  fill(0);
+  text("1", 72, 63);
+  text("2", 130, 63);
+  text("3", 188, 63);
+  text("4", 246, 63);
+  
+  //se dibuja la linea de la scrollbar
+  line(350, 140, 675, 140);
+  valorScroll();
+}
+
+
+/*DECLARACION Y CREACION DE FUNCIONES*/
+//Se crea una funcion para determinar si el mouse se encuentra sobre algun boton
+boolean sobreBoton(int x, int y, int largo, int ancho){
+ if(mouseX >= x && mouseX <= (x+largo) && mouseY >= y && mouseY <= (y+ancho))
+   return true;
+ else 
+   return false;
+}
+
+//Funcion que determina si el mouse esta sobre la linea de dragger
+boolean sobreLinea(){
+ if(mouseX >= 350 && mouseX <= 675 && mouseY >= 149 && mouseY <= (140+scrollLength))
+   return true;
+ else 
+   return false;
+}
+
+//Para verificar que el cursor está sobre el medidor del dragger.
+//Es una variante de sobreBoton, porque hay que tener en cuenta el area que ocupa el boton
+boolean sobreScroll(int x, int y, int largo, int ancho){
+ if(mouseX >= x || mouseX >= (x-largo) && mouseX <= (x+largo) && mouseY >= y && mouseY <= (y+ancho))
+   return true;
+ else 
+   return false;
+}
+
+/*ACCIONES DE PULSADO DE BOTON DE RATON (click)*/
+void mousePressed(){
+  //Si el cursor esta sobre el boton1
+  if(sobreBoton(botonX[0], botonY, botonLength, botonLength)){
+      //Si el color del primer INTERRUPTOR es oscuro
+     if(colorActualInterruptor[0]==interruptor[0]){
+       //intercambiar colores del INTERRUPTOR
+        colorActualInterruptor[0]=interruptor[1];
+        colorActual[0]=interruptor[0];
+      //sino
+     }else{
+       //intercambiar colores del INTERRUPTOR
+        colorActualInterruptor[0]=interruptor[0];
+        colorActual[0]=interruptor[1];
+     }
+     //Si el color del primer BOTON es rojo
+     if(colorActualBoton[0]==botonColor[0]){
+        //cambiar color de BOTON a verde
+        colorActualBoton[0]=botonColor[1];
+     //sino
+     }else{
+         //cambiar el color del BOTON a rojo
+        colorActualBoton[0]=botonColor[0];
+     }
+  }
+  //lo mismo para el boton 2
+  else if(sobreBoton(botonX[1], botonY, botonLength, botonLength)){
+     if(colorActualInterruptor[1]==interruptor[0]){
+        colorActualInterruptor[1]=interruptor[1];
+        colorActual[1]=interruptor[0];
+     }else{
+        colorActualInterruptor[1]=interruptor[0];
+        colorActual[1]=interruptor[1];
+     }
+     if(colorActualBoton[1]==botonColor[0]){
+        colorActualBoton[1]=botonColor[1];
+     }else{
+        colorActualBoton[1]=botonColor[0];
+     }
+  }  
+  //lo mismo para el boton 3
+  else if(sobreBoton(botonX[2], botonY, botonLength, botonLength)){
+     if(colorActualInterruptor[2]==interruptor[0]){
+        colorActualInterruptor[2]=interruptor[1];
+        colorActual[2]=interruptor[0];
+     }else{
+        colorActualInterruptor[2]=interruptor[0];
+        colorActual[2]=interruptor[1];
+     }
+     if(colorActualBoton[2]==botonColor[0]){
+        colorActualBoton[2]=botonColor[1];
+     }else{
+        colorActualBoton[2]=botonColor[0];
+     }
+  }
+  //y el cuatro
+  else if(sobreBoton(botonX[3], botonY, botonLength, botonLength)){
+     if(colorActualInterruptor[3]==interruptor[0]){
+        colorActualInterruptor[3]=interruptor[1];
+        colorActual[3]=interruptor[0];
+     }else{
+        colorActualInterruptor[3]=interruptor[0];
+        colorActual[3]=interruptor[1];
+     }
+     if(colorActualBoton[3]==botonColor[0]){
+        colorActualBoton[3]=botonColor[1];
+     }else{
+        colorActualBoton[3]=botonColor[0];
+     }
+  }
+  
+  if(sobreLinea())
+    scrollX=mouseX;
+      
+}
+
+/*ACCIONES DE TECLAS PRESIONADAS*/
+void keyPressed(){
+//es exactamente igual que mousePressed() pero pulsando las teclas 1, 2, 3, 4, Izq<-, Dcha->
+  if(key=='1'){
+     if(colorActualInterruptor[0]==interruptor[0]){
+        colorActualInterruptor[0]=interruptor[1];
+        colorActual[0]=interruptor[0];
+     }else{
+        colorActualInterruptor[0]=interruptor[0];
+        colorActual[0]=interruptor[1];
+     }
+     if(colorActualBoton[0]==botonColor[0]){
+        colorActualBoton[0]=botonColor[1];
+     }else{
+        colorActualBoton[0]=botonColor[0];
+     }
+  }
+  
+  else if(key=='2'){
+     if(colorActualInterruptor[1]==interruptor[0]){
+        colorActualInterruptor[1]=interruptor[1];
+        colorActual[1]=interruptor[0];
+     }else{
+        colorActualInterruptor[1]=interruptor[0];
+        colorActual[1]=interruptor[1];
+     }
+     if(colorActualBoton[1]==botonColor[0]){
+        colorActualBoton[1]=botonColor[1];
+     }else{
+        colorActualBoton[1]=botonColor[0];
+     }
+  }  
+  
+  else if(key=='3'){
+     if(colorActualInterruptor[2]==interruptor[0]){
+        colorActualInterruptor[2]=interruptor[1];
+        colorActual[2]=interruptor[0];
+     }else{
+        colorActualInterruptor[2]=interruptor[0];
+        colorActual[2]=interruptor[1];
+     }
+     if(colorActualBoton[2]==botonColor[0]){
+        colorActualBoton[2]=botonColor[1];
+     }else{
+        colorActualBoton[2]=botonColor[0];
+     }
+  }
+  
+  else if(key=='4'){
+     if(colorActualInterruptor[3]==interruptor[0]){
+        colorActualInterruptor[3]=interruptor[1];
+        colorActual[3]=interruptor[0];
+     }else{
+        colorActualInterruptor[3]=interruptor[0];
+        colorActual[3]=interruptor[1];
+     }
+     if(colorActualBoton[3]==botonColor[0]){
+        colorActualBoton[3]=botonColor[1];
+     }else{
+        colorActualBoton[3]=botonColor[0];
+     }
+  }
+  
+  else if(keyCode==LEFT){
+    if(scrollX >= 351 && scrollX <= 675)
+      scrollX--;
+  }
+  else if(keyCode==RIGHT){
+    if(scrollX >= 350 && scrollX <= 674)
+      scrollX++;
+  }
+  
+}
+/*ACCION DE ARRASTRAR RATON CON BOTON DEL RATON PRESIONADO*/
+void mouseDragged(){
+   if(sobreLinea()){
+     //Si el cursor esta sobre el medidor se dibuja nuevamente con la coordenada x del cursor
+      if(sobreScroll(scrollX, scrollY, scrollLength, scrollLength))
+        scrollX=mouseX;
+   }
+}
+
+/*VALOR MOSTRADO EN EL MEDIDOR*/
+void valorScroll(){
+  scrollValue= map(scrollX, 350, 675, 0, 100);
+}
             
         </script>
         <canvas></canvas>

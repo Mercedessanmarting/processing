@@ -11,9 +11,8 @@
         <script type="text/processing">
 
             // Write your project here
-/**
-  * @class ProgramaMaster
-  * @author Mercedes San Martín García
+ * @class ProgramaMaster
+  * @author Beatriz Cerdido Hervas
   * Este código va a dibujar un cuadrado rosa en mitad de la pantalla y una circunferencia verde en la esquina del cuadrado,
   * junto a esta, un rectangulo que irá variando de color rotara dejando su estela sobre un fondo, tambien de color aleatorio
   */
@@ -21,7 +20,7 @@ float angulo = 0, variacionAngulo = .1;  // Variables para controlar la rotacion
 void setup() { // Método de configuracion, determina el estado inicial de la pantalla
   size(1000, 600); // Determinar el tamaño de la ventana
   background(random(0,255), random(0,255), random(0,255)); // El color del fondo sera aleatorio cada vez que ejecutemos el programa
-  System.out.println("Programa desarrollado por Mercedes San Martín García");  // Instruccion Java que mostrara mi nombre en la consola una vez se ejecute el programa.
+  System.out.println("Programa desarrollado por Beatriz Cerdido Hervas");  // Instruccion Java que mostrara mi nombre en la consola una vez se ejecute el programa.
 }
 
 void draw() {  // Bucle principal, todas las sentencias que se ubican en este método se repiten en un bule infinito.
@@ -37,5 +36,6 @@ void draw() {  // Bucle principal, todas las sentencias que se ubican en este m�
   angulo += variacionAngulo; // Cambiar la orientacion del rectangulo
   popMatrix();  // Cerrar el eje de coordenadas
   translate(500, 300);  // Desplazar el eje al centro
- 
+  fill(#ff00ff);  // Colorear el cuadrado
+  rect(-100, -100, 200, 200);  // Dibujar el cuadrado y lo centramos
 }

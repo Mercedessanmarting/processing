@@ -7,30 +7,31 @@
         <script src="vendors/processing.min.js"></script>
     </head>
     <body>
-        <h1>Processing project by Mercedes San Martín García</h1>
+        <h1>Processing project by Mercedes San Martin Garcia</h1>
         <script type="text/processing">
 
             // Write your project here
 
-float angulo = 0, variacionAngulo = .1;
-void setup() {
-  size(1000, 600);
-  background(random(0,255), random(0,255), random(0,255)); 
+float angulo = 0, variacionAngulo = .1;  // Variables para controlar la rotacion
+void setup() { // Método de configuracion, determina el estado inicial de la pantalla
+  size(1000, 600); // Determinar el tamaño de la ventana
+  background(random(0,255), random(0,255), random(0,255)); // El color del fondo sera aleatorio cada vez que ejecutemos el programa
+  System.out.println("Programa desarrollado por Beatriz Cerdido Hervas");  // Instruccion Java que mostrara mi nombre en la consola una vez se ejecute el programa.
+}
 
+void draw() {  // Bucle principal, todas las sentencias que se ubican en este método se repiten en un bule infinito.
 
-void draw() {  
-
-  noStroke();  
-  pushMatrix();  
-  translate(400, 200); 
-  fill(#00ff00); 
-  ellipse(0, 0, 100, 100);  
-  fill (random(0, 255), random(0, 255), random(0, 255)); 
+  noStroke();  // Eliminar los bordes
+  pushMatrix();  // Crear un nuevo eje de coordenadas para el circulo y la rotacion
+  translate(400, 200); // Desplazar el eje
+  fill(#00ff00); // Colorear el circulo
+  ellipse(0, 0, 100, 100);  // Dibujar el circulo
+  fill (random(0, 255), random(0, 255), random(0, 255));  // Colorear el rectangulo
   rotate(angulo); // rotarlo
-  rect(0, 50, 2, 300);  
-  angulo += variacionAngulo; 
-  popMatrix(); 
-  translate(500, 300);  
+  rect(0, 50, 2, 300);  // Dibujar el rectangulo
+  angulo += variacionAngulo; // Cambiar la orientacion del rectangulo
+  popMatrix();  // Cerrar el eje de coordenadas
+  translate(500, 300);  // Desplazar el eje al centro
 
 }
 
